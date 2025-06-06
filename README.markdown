@@ -1,6 +1,6 @@
 # WhatsDue — WhatsApp-Based Assignment Reminder Agent 📲
 
-**WhatsDue** is an intelligent, AI-powered reminder system that sends assignment deadline notifications via WhatsApp. Built as a minimalist productivity tool, it leverages a Python backend, MySQL database, and Twilio's WhatsApp API to automate reminders for upcoming tasks.
+**WhatsDue** is a minimalist productivity tool that automates assignment deadline reminders via WhatsApp. It integrates a Flask-based backend with a simple HTML/JavaScript frontend, leveraging a MySQL database and Twilio's WhatsApp API for seamless task management and notifications.
 
 ---
 
@@ -21,20 +21,28 @@
 
 ## Features
 
-- **Task Management**: Add and manage tasks with deadlines in a MySQL database.
-- **Automated Reminders**: Detect tasks due within 24 hours and send WhatsApp notifications.
-- **Twilio Integration**: Deliver reminders via Twilio's WhatsApp API.
-- **Scheduled Execution**: Run autonomously using cron jobs on WSL/Linux.
-- **Secure Configuration**: Store sensitive credentials securely in a `.env` file.
+### Backend
+- **Task Management**: Store tasks with titles, descriptions, and due datetimes in MySQL.
+- **Automated Reminders**: Detect tasks due within 24 hours using Python automation.
+- **Twilio Integration**: Send reminders via Twilio's WhatsApp API.
+- **Scheduled Execution**: Automate reminders with cron jobs on WSL/Linux.
+- **Secure Configuration**: Manage credentials securely using a `.env` file.
+
+### Frontend
+- **Task Entry**: Add tasks via a user-friendly HTML/JavaScript interface.
+- **Dynamic Form**: Input task details with client-side validation.
+- **API Integration**: Communicate with the Flask backend using Fetch API.
+- **User Feedback**: Display confirmation popups for task submissions.
 
 ---
 
 ## How It Works
 
-1. **Task Storage**: Tasks with titles, descriptions, and due datetimes are stored in a MySQL database.
-2. **Reminder Check**: A Python script (`run_reminders.py`) queries tasks due within the next 24 hours.
-3. **Notification Delivery**: If due tasks are found, reminders are sent via Twilio's WhatsApp API.
-4. **Automation**: A cron job schedules the script to run periodically.
+1. **Task Entry**: Users add tasks through a web interface (`index.html`).
+2. **Task Storage**: The Flask API stores tasks in a MySQL database.
+3. **Reminder Check**: A Python script (`run_reminders.py`) queries tasks due within 24 hours.
+4. **Notification Delivery**: Due tasks trigger WhatsApp messages via Twilio's API.
+5. **Automation**: Cron jobs schedule the reminder script to run periodically.
 
 ---
 
@@ -43,21 +51,28 @@
 ```
 whatsdue/
 │
-├── whatsdue-backend/              # Backend source code and modules
-│   ├── whatsapp_bot.py            # WhatsApp messaging logic
-│   ├── run_reminders.py           # Core reminder script
-│   ├── db_config.py               # Database configuration
-│   ├── task_manager.py            # Task management logic
-│   ├── .env.example               # Example environment file
-│   └── requirements.txt           # Python dependencies
+├── whatsdue-backend/                  # Backend (Flask API + Reminder Logic)
+│   ├── app.py                         # Flask API for task management
+│   ├── db_config.py                   # Database configuration
+│   ├── task_manager.py                # Task operations logic
+│   ├── whatsapp_bot.py                # WhatsApp messaging logic
+│   ├── run_reminders.py               # Reminder script for due tasks
+│   ├── .env.example                   # Environment variable template
+│   └── requirements.txt               # Python dependencies
 │
-├── test-files/                    # Test scripts
-│   ├── test_db_connection.py      # Database connection tests
-│   ├── test_task_manager.py       # Task manager tests
+├── whatsdue-frontend/                 # Frontend (Static Web Interface)
+│   ├── index.html                     # HTML structure for task entry
+│   ├── style.css                      # CSS for UI styling
+│   ├── script.js                      # JavaScript for form handling and API calls
+│   └── README.md                      # (Optional) Frontend-specific guide
+│
+├── test-files/                        # Test scripts
+│   ├── test_db_connection.py          # Database connection tests
+│   ├── test_task_manager.py           # Task manager tests
 │   └── ...
 │
-├── README.md                      # Project documentation
-└── .gitignore                     # Git ignore file
+├── README.md                          # Project documentation
+└── .gitignore                         # Git ignore file
 ```
 
 ---
@@ -66,7 +81,8 @@ whatsdue/
 
 | Technology       | Purpose                           |
 |------------------|-----------------------------------|
-| Python           | Core logic and automation         |
+| HTML, CSS, JS    | Frontend interface                |
+| Python, Flask    | Backend API and logic             |
 | MySQL            | Persistent task storage           |
 | Twilio API       | WhatsApp message delivery         |
 | Cron (WSL/Linux) | Scheduled task execution          |
@@ -81,6 +97,7 @@ whatsdue/
 - MySQL Server
 - Twilio account with WhatsApp API access
 - WSL/Linux (for cron job scheduling)
+- Modern web browser (for frontend)
 
 ### Steps
 
@@ -90,9 +107,10 @@ whatsdue/
    cd whatsdue
    ```
 
-2. **Install Dependencies**
+2. **Install Backend Dependencies**
    ```bash
-   pip install -r whatsdue-backend/requirements.txt
+   cd whatsdue-backend
+   pip install -r requirements.txt
    ```
 
 3. **Configure Environment Variables**
@@ -124,22 +142,34 @@ whatsdue/
    Insert sample data for testing:
    ```sql
    INSERT INTO tasks (title, description, due_datetime, reminder_sent) VALUES
-   ('Math Assignment', 'Complete calculus problems', NOW() + INTERVAL 4 HOUR, FALSE),
-   ('Java Project', 'Submit project report', NOW() + INTERVAL 12 HOUR, FALSE);
+   ('DSA Homework', 'Stacks and queues', NOW() + INTERVAL 3 HOUR, FALSE),
+   ('Unix Project', 'Submit source code', NOW() + INTERVAL 20 HOUR, FALSE);
    ```
 
-6. **Run the Reminder Script**
-   From the `whatsdue-backend/` directory:
+6. **Run the Flask Backend**
    ```bash
+   cd whatsdue-backend
+   python app.py
+   ```
+   Expected output:
+   ```
+    * Running on http://127.0.0.1:5000/
+   ```
+
+7. **Access the Frontend**
+   Open `whatsdue-frontend/index.html` in a browser. Ensure the Flask backend is running for API functionality.
+
+8. **Run the Reminder Script**
+   Manually run the reminder script:
+   ```bash
+   cd whatsdue-backend
    python run_reminders.py
    ```
-
-7. **Schedule Cron Job (Linux/WSL Only)**
-   Edit the cron table:
+   To automate, edit the cron table:
    ```bash
    crontab -e
    ```
-   Add the following to run the script every 15 minutes (adjust paths as needed):
+   Add the following to run every 15 minutes (adjust paths as needed):
    ```bash
    */15 * * * * /usr/bin/python3 /path/to/whatsdue-backend/run_reminders.py
    ```
@@ -161,13 +191,13 @@ python test-files/test_task_manager.py
 **Console Output**:
 ```
 ✅ Connected to the MySQL database successfully!
-✅ WhatsApp message sent. SID: SMxxxxxxxxxxxxxx
+✅ WhatsApp message sent. SID: SMxxxxxxxxxxxxxxxxx
 ```
 
 **WhatsApp Message**:
 ```
-Reminder: Math Assignment is due by 2025-06-07 13:00.
-Task: Complete calculus problems.
+Reminder: DSA Homework is due by 2025-06-07 18:00.
+Task: Stacks and queues.
 ```
 
 ---
@@ -175,10 +205,10 @@ Task: Complete calculus problems.
 ## Future Scope
 
 - Multi-user support with authentication
-- Web interface for task management and visualization
+- Enhanced UI with Bootstrap integration
 - NLP-based task input via WhatsApp
-- Integration with Google Calendar or Outlook
-- Customizable reminder intervals
+- Daily/weekly task summaries
+- Cloud deployment on platforms like Render or Heroku
 
 ---
 
@@ -192,4 +222,4 @@ GitHub: [@iuttkarshh0409](https://github.com/iuttkarshh0409)
 
 ## License
 
-This project is licensed for **educational and personal use only**. Usage of the Twilio WhatsApp API must comply with the [WhatsApp Business Policy](https://www.whatsapp.com/legal/business-policy/). Ensure you review and adhere to Twilio's terms of service.
+This project is licensed for **educational and personal use only**. Usage of the Twilio WhatsApp API must comply with the [WhatsApp Business Policy](https://www.whatsapp.com/legal/business-policy/) and [Twilio Terms of Service](https://www.twilio.com/legal/tos).
