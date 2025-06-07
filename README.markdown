@@ -197,7 +197,7 @@ python test-files/test_task_manager.py
 **WhatsApp Message**:
 ```
 Reminder: DSA Homework is due by 2025-06-07 18:00.
-Task: Stacks and queues.
+Task: Stacks and Queues.
 ```
 
 ---
