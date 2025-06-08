@@ -1,5 +1,9 @@
 # WhatsDue — WhatsApp-Based Assignment Reminder Agent 📲
 
+![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Built by Utkarsh](https://img.shields.io/badge/built%20by-Utkarsh%20Dubey-blue)
+
+
 **WhatsDue** is a minimalist productivity tool that automates assignment deadline reminders via WhatsApp. It integrates a Flask-based backend with a simple HTML/JavaScript frontend, leveraging a MySQL database and Twilio's WhatsApp API for seamless task management and notifications.
 
 ---
