@@ -224,6 +224,19 @@ GitHub: [@iuttkarshh0409](https://github.com/iuttkarshh0409)
 
 ---
 
+## Usage Terms & Attribution
+
+This project is **open-source for educational and personal use**. Anyone is welcome to explore, learn from, or extend it — but **redistributing** or **rebranding** it without proper attribution is **strictly discouraged**.
+
+To credit the author:
+- Mention **Utkarsh Dubey** (GitHub: [@iuttkarshh0409](https://github.com/iuttkarshh0409)) in any derived work or public reposting.
+- Maintain this repository's GitHub link in your acknowledgements if reusing any core part of the code or idea.
+
+Violation of these terms may lead to copyright takedown reports on GitHub or other platforms.
+
+---
+
+
 ## License
 
 MIT License
